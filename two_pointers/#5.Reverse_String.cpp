@@ -26,50 +26,40 @@ using umll = unordered_map<ll, ll>;
 class Solution
 {
 public:
-    // Return true if a char is alphanumeric.
-    // O(1)
-    bool isAlphaNumeric(char c)
+    // Without using Two Pointers
+    // Time : O(n/2)
+    // Space : O(1)
+    void reverseString1(vector<char> &s)
     {
-        return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') && (c != ' ');
+        int n = s.size();
+        int mid = n / 2;
+
+        // Traverse until the mid of the array, and swap the current char with de corresponding char next to mid
+        for (int i = 0; i < mid; i++)
+        {
+            char temp = s[i];
+            s[i] = s[n - 1 - i];
+            s[n - 1 - i] = temp;
+        }
     }
 
+    // Using Two Pointers
     // Time : O(n)
     // Space : O(1)
-    bool isPalindrome(string s)
+    void reverseString2(vector<char> &s)
     {
         int n = s.size();
 
         int left = 0;
         int right = n - 1;
 
-        bool sol = true;
-
-        while (left < right)
+        // Swap chars in both pointers until they meet
+        while (left <= right)
         {
-            // Ignore non-alphanumeric chars
-            while (left < right && !isAlphaNumeric(tolower(s[left])))
-            {
-                left++;
-            }
-
-            while (right > left && !isAlphaNumeric(tolower(s[right])))
-            {
-                right--;
-            }
-
-            // If are different, is not palindrome
-            if (tolower(s[left]) != tolower(s[right]))
-            {
-                sol = false;
-                break;
-            }
-
-            // Move both pointers to continue with the next chars
+            swap(s[left], s[right]);
             left++;
             right--;
         }
-
-        return sol;
     }
 };
 
@@ -81,9 +71,12 @@ int main()
 
     Solution *sol = new Solution();
 
-    string test = "tab a cat";
+    vector<char> s = {'s', 'e', 'b', 'a', 's'};
 
-    cout << sol->isPalindrome(test);
+    sol->reverseString2(s);
+
+    for (auto &u : s)
+        cout << u << " ";
 
     return 0;
 }

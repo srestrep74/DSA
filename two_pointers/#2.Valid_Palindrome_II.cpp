@@ -26,47 +26,47 @@ using umll = unordered_map<ll, ll>;
 class Solution
 {
 public:
-    // Return true if a char is alphanumeric.
-    // O(1)
-    bool isAlphaNumeric(char c)
+    bool isPalindrome(string s, int left, int right)
     {
-        return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') && (c != ' ');
+        int sol = true;
+        while (left < right)
+        {
+            if (s[left] != s[right])
+            {
+                sol = false;
+                break;
+            }
+            left++;
+            right--;
+        }
+
+        return sol;
     }
 
     // Time : O(n)
     // Space : O(1)
-    bool isPalindrome(string s)
+    bool validPalindrome(string s)
     {
-        int n = s.size();
 
         int left = 0;
-        int right = n - 1;
+        int right = s.size() - 1;
 
         bool sol = true;
 
         while (left < right)
         {
-            // Ignore non-alphanumeric chars
-            while (left < right && !isAlphaNumeric(tolower(s[left])))
+            // If are the same chars, keep moving pointers
+            if (s[left] == s[right])
             {
                 left++;
-            }
-
-            while (right > left && !isAlphaNumeric(tolower(s[right])))
-            {
                 right--;
             }
-
-            // If are different, is not palindrome
-            if (tolower(s[left]) != tolower(s[right]))
+            else
             {
-                sol = false;
+                // If are different, check  if the substring is palindrome without taking the left or without taking  the  right
+                sol = isPalindrome(s, left + 1, right) || isPalindrome(s, left, right - 1);
                 break;
             }
-
-            // Move both pointers to continue with the next chars
-            left++;
-            right--;
         }
 
         return sol;
@@ -81,9 +81,9 @@ int main()
 
     Solution *sol = new Solution();
 
-    string test = "tab a cat";
+    string test = "abcbba";
 
-    cout << sol->isPalindrome(test);
+    cout << sol->validPalindrome(test);
 
     return 0;
 }
